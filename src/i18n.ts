@@ -6,15 +6,12 @@ import axios from "axios";
 
 const isProductionCode = process.env.NODE_ENV === 'production';
 const fallbackLanguage = 'en'
-
-const projectToken = "XXXXXXXXXXXXXX"; // YOUR PROJECT TOKEN
-const apiKey = "XXXXXXXXXXXXXX"; // YOUR API KEY
-
+const projectToken = "28fd9a7a3ce84d43b113194dd82d319b"; 
+const apiKey = "19ED07d873262aA0eC9E98384E2015Eaa82F5E799b319f73"; 
 const apiBaseUrl = "https://api.simplelocalize.io/api";
 const cdnBaseUrl = "https://cdn.simplelocalize.io";
-const environment = "_latest"; // or "_production"
+const environment = "_latest"; 
 const loadPath = `${cdnBaseUrl}/${projectToken}/${environment}/{{lng}}`;
-const loadPathWithNamespaces = `${cdnBaseUrl}/${projectToken}/${environment}/{{lng}}/{{ns}}`;
 const configuration = {
     headers: {
         'X-SimpleLocalize-Token': apiKey
@@ -35,10 +32,8 @@ const saveMissing = async () => {
         key: element.translationKey,
         namespace: element.namespace,
     }));
-
     await createTranslationKeys({translationKeys})
         .catch((error) => console.error(`Error during creating translation keys: ${error}`));
-
     const translations = missing.map((element) => ({
         key: element.translationKey,
         namespace: element.namespace,
@@ -52,8 +47,7 @@ const saveMissing = async () => {
 
 setInterval(async () => {
     await saveMissing();
-}, 30_000); // decreasing this value may lead to the API rate limit
-
+}, 30_000); 
 i18n
     .use(Backend)
     .use(LanguageDetector)
@@ -61,10 +55,10 @@ i18n
     .init({
         fallbackLng: fallbackLanguage,
         backend: {
-            loadPath: loadPath, // or loadPathWithNamespaces if you use namespaces
+            loadPath: loadPath, 
         },
         saveMissing: !isProductionCode,
-        defaultNS: "", // you can set default namespace here
+        defaultNS: "",
         missingKeyHandler: async (languages, namespace, translationKey, fallbackValue) => {
             console.debug(`[${namespace}][${translationKey}] not available in Translation Hosting`);
             missing.push({
